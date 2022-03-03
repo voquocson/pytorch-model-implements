@@ -1,6 +1,4 @@
-from mobilenetv1 import MobileNetV1
-import torch
-
-net = MobileNetV1()
-x = torch.randn((1, 3, 224, 224))
-print(net(x).shape)
+from models.mobilenetv1 import MobileNetV1
+from models.densenet import DenseNet121, DenseNet161, DenseNet169, DenseNet201
+from models.resnet import Resnet50, Resnet101, Resnet34, Resnet18
+from models.vgg import VGG

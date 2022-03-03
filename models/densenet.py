@@ -83,6 +83,8 @@ class DenseNet(nn.Module):
         self.avgpool = nn.AdaptiveAvgPool2d((1, 1))
         self.fc = nn.Linear(in_planes, num_classes)
 
+        self._initialize_weights()
+
     def forward(self, x):
         out = self.conv1(x)
         out = self.bn1(out)
@@ -97,7 +99,6 @@ class DenseNet(nn.Module):
 
         return out
 
-    
     def _make_layer(self, block, in_planes, repeat):
         layers = []
         for _ in range(repeat):
@@ -105,6 +106,19 @@ class DenseNet(nn.Module):
             in_planes += self.growth_rate
         
         return nn.Sequential(*layers)
+
+    def _initialize_weights(self):
+        for m in self.modules():
+            if isinstance(m, nn.Conv2d):
+                nn.init.kaiming_normal_(m.weight, mode="fan_out", nonlinearity="relu")
+                if m.bias is not None:
+                    nn.init.constant_(m.bias, 0)
+            elif isinstance(m, nn.BatchNorm2d):
+                nn.init.constant_(m.weight, 1)
+                nn.init.constant_(m.bias, 0)
+            elif isinstance(m, nn.Linear):
+                nn.init.normal_(m.weight, 0, 0.01)
+                nn.init.constant_(m.bias, 0)
 
 
 def DenseNet121():
@@ -118,5 +132,3 @@ def DenseNet201():
 
 def DenseNet161():
     return DenseNet(BottleneckLayer, [6,12,36,24], growth_rate=48)
-
-

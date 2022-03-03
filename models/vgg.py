@@ -10,7 +10,7 @@ cfgs = {
 }
 
 class VGG(nn.Module):
-    def __init__(self, cfg, in_planes=3, num_classes=1000, init_weights=True):
+    def __init__(self, cfg, in_planes=3, num_classes=1000):
         super(VGG, self).__init__()
 
         self.features = self._make_layer(cfg, in_planes)
@@ -22,8 +22,7 @@ class VGG(nn.Module):
             nn.Linear(4096, num_classes)
         )
 
-        if init_weights:
-            self._initialize_weights()
+        self._initialize_weights()
 
     def forward(self, x):
         x = self.features(x)
@@ -60,7 +59,3 @@ class VGG(nn.Module):
                 in_planes = out_planes
         
         return nn.Sequential(*layers)
-
-x = torch.randn((1, 3, 224, 224))
-vgg = VGG(cfgs['16'])
-print(vgg(x).shape)
