@@ -63,7 +63,7 @@ class DenseNet(nn.Module):
         self.growth_rate = growth_rate
 
         in_planes = growth_rate * 2
-        self.conv1 = nn.Conv2d(3, in_planes, kernel_size=3, padding=1, bias=False)
+        self.conv1 = nn.Conv2d(3, in_planes, kernel_size=3, stride=2, padding=1, bias=False)
         self.bn1 = nn.BatchNorm2d(in_planes)
         self.relu = nn.ReLU(inplace=True)
 

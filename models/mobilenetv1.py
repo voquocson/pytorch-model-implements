@@ -19,7 +19,7 @@ class MobileNetV1(nn.Module):
     def __init__(self, num_classes=10):
         super(MobileNetV1, self).__init__()
 
-        self.conv1 = nn.Conv2d(3, 32, kernel_size=3, stride=2, padding=1, bias=False)
+        self.conv1 = nn.Conv2d(3, 32, kernel_size=3, stride=1, padding=1, bias=False)
         self.norm1 = nn.BatchNorm2d(32)
         self.act1 = nn.ReLU(inplace=True)
 
@@ -53,9 +53,9 @@ class MobileNetV1(nn.Module):
     
     def _depth_separable_conv(self, in_planes, out_planes, stride):
         ds_conv = nn.Sequential(
-            DepthwiseConv(in_planes, kernel_size=3, stride=1, padding=1),
-            nn.Conv2d(in_planes, out_planes, kernel_size=1, 
-                        stride=stride, padding=1, bias=False),
+            DepthwiseConv(in_planes, kernel_size=3, stride=stride, padding=1),
+            nn.Conv2d(in_planes, out_planes, kernel_size=1,
+                        stride=1, bias=False),
             nn.BatchNorm2d(out_planes),
             nn.ReLU(inplace=True)
         )
